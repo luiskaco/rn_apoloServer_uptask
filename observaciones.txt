@@ -1,0 +1,35 @@
+/*************** NODE INIT ¨¨¨*****************************/
+
+Creando el archivo package json por default
+
+npm init -y
+
+
+/************** DEPENDENCIAS **************************/
+
+Servidor apollo
+
+npm i apollo-server
+
+Nota: sirve para crear servidores de graphql
+
+npm i graphql
+
+-- Para reiniciar el servidor si hay cambios
+npm i --save-dev nodemon
+
+/***************** MODIFICANDO EL SCRITPS ***************/ 
+
+"start": "node .",  // para el deploiment
+"dev": "nodemon .", // para el trabajo local
+
+
+/***************** MOONGOSE ***************************/
+
+npm i mongoose
+
+Nota: ORM de mongoose
+
+npm i dotenv
+
+Nota: para crear variables de entorno
