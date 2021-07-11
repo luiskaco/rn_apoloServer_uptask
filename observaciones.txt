@@ -33,3 +33,18 @@ Nota: ORM de mongoose
 npm i dotenv
 
 Nota: para crear variables de entorno
+
+/***************** UTILIDADES *************************/
+
+Para hash de los paswword
+
+npm i bcryptjs
+
+Para crear token (json Web Token)
+
+npm i jsonwebtoken
+
+para verificar token 
+
+https://jwt.io/
+
