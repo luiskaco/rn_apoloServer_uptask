@@ -5,6 +5,8 @@ const {gql}  = require('apollo-server')
 // El esquema de consulta
 const typeDefs = gql`
 
+    # Como se mostraran los datos
+
     type Curso {
         titulo: String,
         tecnologia: String,
@@ -23,12 +25,28 @@ const typeDefs = gql`
         id: ID
     }
 
+    type Tarea {
+        nombre: String,
+        id: ID,
+        proyecto: String,
+        estado: Boolean
+    }
+
+
+    # Consultas
+
     type Query {
         obtenerCursos : [Curso] 
         obtenerTecnologia: [Tecnologia]
 
+        #Proyecto
         obtenerProyectos : [Proyecto]
+
+        #Tarea
+        obtenerTareas(input: ProyectoIDInput) : [Tarea]
     }
+
+    # Valores que de entrada
 
     input UsuarioInput {
         nombre: String!,
@@ -45,12 +63,33 @@ const typeDefs = gql`
         nombre: String!
     }
 
-    type Mutation {       
+    input TareaInput {
+        nombre: String!,
+        proyecto: String!
+    }
+
+    input ProyectoIDInput {
+        proyecto: String!
+    }
+
+
+    type Mutation {  
+        
+        # Proyectos
+
         crearUsuario(input: UsuarioInput) : String 
         autenticarUsuario(input: AutenticarInput) : Token
         nuevoProyecto(input: ProyectoInput): Proyecto
         actualizarProyecto(id: ID!, input: ProyectoInput) : Proyecto
         eliminarProyecto(id: ID!) : String
+
+        # Tareas
+
+        nuevaTarea(input: TareaInput) : Tarea
+        actualizarTarea(id: ID!, input: TareaInput, estado: Boolean) : Tarea 
+        
+        eliminarTarea(id: ID!) : String
+
 
     }
 `;

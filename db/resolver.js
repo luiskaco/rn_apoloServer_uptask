@@ -1,16 +1,17 @@
 // Importando dotenv
 require('dotenv').config({ path: 'variables.env'})
-// Importamos el modelo 
+// Importamos el modelo Usuario 
 const Usuario = require('../models/Usuario');
-// importando proyecto
+// importando el modelo proyecto
 const Proyecto = require('../models/Proyecto');
+// Importando el modelo Tarea
+const Tarea = require('../models/Tarea');
+
 // Importando el encriptador
 const bcryptjs = require('bcryptjs');
 // Importando jsonWeb token
 const jwt = require('jsonwebtoken');
 const { CheckResultAndHandleErrors } = require('apollo-server');
-
-
 
 // Crea y firma un JWT
 
@@ -56,6 +57,14 @@ const resolvers = {
             const proyectos = await Proyecto.find({ creador: ctx.usuario._id});
 
             return proyectos;
+        },
+
+        // Tarea 
+        obtenerTareas : async (_, {input}, ctx) => { 
+            // Buscamos las tareas asociada al creador perteneciente del proyecto
+            const tareas = await Tarea.find({creador: ctx.usuario._id }).where('proyecto').equals(input.proyecto)
+            
+            return tareas;
         }
     },
     // Nota: Funciona como un create, delete, update
@@ -200,7 +209,69 @@ const resolvers = {
 
             return "Proyecto Eliminado";
 
+        },
+
+        // TAREAS
+        nuevaTarea: async (_, {input}, ctx, info) => {  
+            try {
+                
+                const tarea =  new Tarea(input)
+                // Agregamos el atributo del creador
+                tarea.creador= ctx.usuario._id;
+
+                //console.log(tarea);
+                // Guardamos
+                resultado = await tarea.save();
+
+                // Retornamos el objeto
+                return resultado;
+
+            } catch(error){
+                console.log(error);
+            }
+        },
+        actualizarTarea:  async (_, {id ,input, estado}, ctx, info) => {  
+            // Revisa si existe la tarea
+            let tarea = await Tarea.findById(id);
+
+            if(!tarea){
+                throw new Error('Tarea No encontrado');
+            }
+
+           // Tevisar que la persona es la creadora
+              if(tarea.creador.toString() !== ctx.usuario._id){
+                throw new Error('No tienes las credenciales para editar');
+            }
+
+            // Asignar el estado
+            input.estado = estado;
+
+            // Guardar y retornar tarea
+
+            tarea = await Tarea.findOneAndUpdate({_id: id}, input, {new: true} );
+
+            return tarea; 
+        },
+        eliminarTarea :  async (_, {id }, ctx, info) => {  
+                // Revisar que el proyecto existe
+                let tarea = await Tarea.findById(id);
+
+                if(!tarea){
+                    throw new Error('Proyecto No encontrado');
+                }
+    
+                // Tevisar que la persona es la creadora
+                if(tarea.creador.toString() !== ctx.usuario._id){
+                    throw new Error('No tienes las credenciales para editar');
+                }
+    
+                // Eliminar tarea
+    
+                await Tarea.findByIdAndDelete({_id: id});
+    
+                return "Tarea Eliminado";
         }
+
     }
 
     /**
