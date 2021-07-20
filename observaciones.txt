@@ -18,6 +18,13 @@ npm i graphql
 -- Para reiniciar el servidor si hay cambios
 npm i --save-dev nodemon
 
+
+NOta: Existe dos versions de apolo, el que es del servidor y el que va al cliente.
+
+apollo Server: https://www.apollographql.com/docs/apollo-server/
+apollo: Cliente: https://www.apollographql.com/docs/react/
+
+
 /***************** MODIFICANDO EL SCRITPS ***************/ 
 
 "start": "node .",  // para el deploiment
