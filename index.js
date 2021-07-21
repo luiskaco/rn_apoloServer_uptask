@@ -28,21 +28,28 @@ const server = new ApolloServer(
         resolvers,
         
         context: ({req}) => {
+            console.log(req.headers['authorization'])
+
             // Obtenemos el token
             const token = req.headers['authorization'] || '';
             // Nota: Validamos si esta autenticado  o no
-           // console.log(token)
+           
             //  console.log(req.headers)
             
             // Si hay un token
-            if(token){
+            if(token){ 
+                const tokenClean = token.replace('Bearer ','');
+
                 try {
-                    const usuario = jwt.verify(token, process.env.SECRETA);
+                    const usuario = jwt.verify(tokenClean, process.env.SECRETA);
                     // Obtenemos los valores del usuario autenticado
+
+                         console.log(usuario);
+
                     return {
                         usuario
                     }
-                   //  console.log(usuario);
+               
           
                     
                 }catch (error){

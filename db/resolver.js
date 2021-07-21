@@ -16,12 +16,12 @@ const { CheckResultAndHandleErrors } = require('apollo-server');
 // Crea y firma un JWT
 
 const crearToken = (usuario, secreta, expiresIn) => {
-  console.log(usuario)
+ // console.log(`token del: ${usuario}` )
 
-  const { _id , email} = usuario;
+  const { _id , email, nombre} = usuario;
 
   // Firmamos el token
-  return jwt.sign({_id, email}, secreta,  {expiresIn});
+  return jwt.sign({_id, email, nombre}, secreta,  {expiresIn});
 
 }
 
@@ -135,7 +135,7 @@ const resolvers = {
 
             return {
                 // Retornamos un token
-                token: crearToken(existeUsuario , process.env.SECRETA, '2hr')
+                token: crearToken(existeUsuario , process.env.SECRETA, '5hr')
             }
             return "Has iniciado sesión"
    
