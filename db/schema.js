@@ -65,7 +65,7 @@ const typeDefs = gql`
 
     input TareaInput {
         nombre: String!,
-        proyecto: String!
+        proyecto: String
     }
 
     input ProyectoIDInput {
