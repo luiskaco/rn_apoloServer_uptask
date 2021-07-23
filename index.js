@@ -61,6 +61,10 @@ const server = new ApolloServer(
 
 // NOta: se debe psar primero los typeDef y luego los resolver
 
-server.listen().then(({url}) => {
+server.listen({ port: process.env.PORT || 4000 }).then(({url}) => {
     console.log(`Servidor listo en la URL ${url}`)
 })
+
+/**
+ *  nota: { port: process.env.PORT || 4000 } heroku autmaticamente nos asigna un peurto. Si estmaos en local se usa el 4000
+ */
